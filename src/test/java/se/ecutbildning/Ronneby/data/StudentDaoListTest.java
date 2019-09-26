@@ -6,6 +6,7 @@ import org.junit.Test;
 import se.ecutbildning.Ronneby.model.Student;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class StudentDaoListTest {
 
@@ -17,19 +18,57 @@ public class StudentDaoListTest {
 
     @Before
     public void setUp(){
-        peter = new Student(5,"Peter", "peter@ec.com","Hemvägen 1");
+        peter = new Student("Peter", "peter@ec.com","Hemvägen 1");
         studentList = new StudentDaoList();
+        khalifa = new Student("khalifa","khalifa@ec.com","halagatan");
         studentList.saveStudent(peter);
+        studentList.saveStudent(khalifa);
 
 
 
     }
     @Test
     public  void testSaveStudent(){
-        khalifa = new Student(6,"khalifa","khalifa@ec.com","halagatan");
+        khalifa = new Student("khalifa","khalifa@ec.com","halagatan");
         //studentList.saveStudent(khalifa);
         Assert.assertEquals(khalifa,studentList.saveStudent(khalifa));
+        Assert.assertEquals("khalifa", khalifa.getName());
+        Assert.assertEquals("khalifa@ec.com", khalifa.getEmail());
+        Assert.assertEquals("halagatan",khalifa.getAddress());
+    }
+    @Test
+    public void testFindByEmail(){
+        Assert.assertEquals(peter,studentList.findByEmail("peter@ec.com"));
+        Assert.assertEquals("peter@ec.com", peter.getEmail());
+    }
+
+    @Test
+    public void testFindByName(){
+        List<Student> expected = new ArrayList<>();
+        expected.add(peter);
+        Assert.assertEquals(expected,studentList.findByName("peter"));
+        Assert.assertEquals("Peter", peter.getName());
         //System.out.println(studentList.findAll());
+    }
+
+    @Test
+    public void testFindById(){
+        Assert.assertEquals(peter,studentList.findById(peter.getId()));
+    }
+
+    @Test
+    public void testFindAllStudents(){
+        List<Student> expected = new ArrayList<>();
+        expected.add(peter);
+        expected.add(khalifa);
+        Assert.assertEquals(expected, studentList.findAll());
+
+    }
+
+    @Test
+    public void testDeleteStudent(){
+        Assert.assertTrue(studentList.deleteStudent(khalifa));
+        System.out.println(studentList.findAll());
     }
 
 }

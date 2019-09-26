@@ -59,17 +59,19 @@ public class Course {
         this.students = students;
     }
 
-    public void register(Student student){
+    public boolean register(Student student){
         if(!students.contains(student)){
             students.add(student);
+            return true;
         }
-
+return false;
     }
 
-    public void unregister(Student student){
+    public boolean unregister(Student student){
         if(students.contains(student)){
             students.remove(student);
-        }
+            return true;
+        }return false;
     }
 
     @Override

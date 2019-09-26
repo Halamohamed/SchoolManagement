@@ -1,27 +1,25 @@
 package se.ecutbildning.Ronneby.model;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public class Student {
-    private int id;
+    private String id;
     private String name;
     private String email;
     private String address;
 
-    public Student(int id, String name, String email, String address) {
-        this.id = id;
+    public Student( String name, String email, String address) {
+        this.id = UUID.randomUUID().toString();
         this.name = name;
         this.email = email;
         this.address = address;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

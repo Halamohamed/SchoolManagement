@@ -34,7 +34,7 @@ public class StudentDaoList implements StudentDao {
     public List<Student> findByName(String name) {
         List<Student> temp = new ArrayList<>();
         for (Student student : students){
-            if (name.equals(student.getName())){
+            if (name.equalsIgnoreCase(student.getName())){
                 temp.add(student);
             }
         }
@@ -42,9 +42,9 @@ public class StudentDaoList implements StudentDao {
     }
 
     @Override
-    public Student findById(int id) {
+    public Student findById(String id) {
         for (Student student : students){
-            if(id == student.getId()){
+            if(id.equals(student.getId())){
                 return student;
             }
         }

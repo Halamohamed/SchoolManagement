@@ -30,7 +30,7 @@ public class CourseDaoListTest
     Student peter;
     @Before
     public void setUp(){
-        khalifa = new Student(1,"Khalifa","khalifa@ecutb.se","khalifagatan");
+        khalifa = new Student("Khalifa","khalifa@ecutb.se","khalifagatan");
         java = new Course(1,"java", LocalDate.parse("2019-08-19"),6,new ArrayList<Student>());
         courseDaoList = new CourseDaoList();
         javaScript19 = new Course(3,"javaScript", LocalDate.parse("2019-11-05"), 5, new ArrayList<>());
@@ -45,18 +45,28 @@ public class CourseDaoListTest
     public void testSaveCourse() {
         Course html = new Course(2, "html", LocalDate.parse("2019-09-30"), 5, new ArrayList<>());
 
+        List<Student> expected = new ArrayList<>();
         Assert.assertEquals(html, courseDaoList.saveCourse(html));
-        System.out.println(courseDaoList.findAll());
+        //System.out.println(courseDaoList.findAll());
+        Assert.assertEquals(2, html.getId());
+        Assert.assertEquals("html", html.getCourseName());
+        Assert.assertEquals(LocalDate.parse("2019-09-30"), html.getStartDate());
+        Assert.assertEquals(5, html.getWeekDuration());
+        Assert.assertEquals(expected, html.getStudents());
     }
     @Test
     public void testFindById(){
+
         Assert.assertEquals(java, courseDaoList.findById(1));
+        Assert.assertEquals(1, java.getId());
     }
     @Test
     public void testFindByName(){
         List<Course> temp = new ArrayList<>();
         temp.add(java);
         Assert.assertEquals(temp, courseDaoList.findByName("java"));
+        Assert.assertEquals("java",java.getCourseName());
+
     }
 
     @Test
@@ -66,6 +76,7 @@ public class CourseDaoListTest
         temp.add(javaScript19);
         temp.add(javaScript18);
         Assert.assertEquals(temp, courseDaoList.findByDate(LocalDate.parse("2019-11-05")));
+        Assert.assertEquals(LocalDate.parse("2019-11-05"), javaScript19.getStartDate());
     }
     @Test
     public void testFindAll(){
@@ -80,5 +91,12 @@ public class CourseDaoListTest
     public void testRemoveCourse(){
         Assert.assertTrue(courseDaoList.removeCourse(javaScript18));
         System.out.println(courseDaoList.findAll());
+    }
+
+    @Test
+    public void testRegisterStudent(){
+        hala = new Student("hala","hala@ec.se","halavägen");
+        Assert.assertTrue(java.register(hala));
+        Assert.assertTrue(java.unregister(hala));
     }
 }
