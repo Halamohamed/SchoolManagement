@@ -234,12 +234,15 @@ public class App
     }
 
     private static void menu() {
+
         System.out.println("select a number for your choice : ");
+        System.out.println("--------------------------------------------------");
         System.out.println("(1)Create new Courses and Students");
         System.out.println("(2)Register and remove Students to/from Courses");
         System.out.println("(3)Finding Courses and Students in various ways");
         System.out.println("(4)Edit Courses and Students ");
         System.out.println("(5)Get all Students ");
         System.out.println("(6)Get all Courses ");
+        System.out.println("--------------------------------------------------");
     }
 }

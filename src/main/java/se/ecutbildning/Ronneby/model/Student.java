@@ -54,6 +54,8 @@ public class Student {
                 email.equals(student.email);
     }
 
+
+
     @Override
     public int hashCode() {
         return Objects.hash(id, email);
@@ -67,5 +69,10 @@ public class Student {
                 ", email='" + email + '\'' +
                 ", address='" + address + '\'' +
                 '}';
+    }
+
+
+    public boolean compareTo(Student o) {
+        return this.email.equals(o.getEmail());
     }
 }
