@@ -68,7 +68,7 @@ public class Student {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", address='" + address + '\'' +
-                '}';
+                '}'+ "\n";
     }
 
 

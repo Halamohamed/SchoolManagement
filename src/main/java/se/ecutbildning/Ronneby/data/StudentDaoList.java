@@ -1,5 +1,7 @@
 package se.ecutbildning.Ronneby.data;
 
+import se.ecutbildning.Ronneby.exeptions.ResourceExist;
+import se.ecutbildning.Ronneby.exeptions.ResourceNotExist;
 import se.ecutbildning.Ronneby.model.Student;
 
 import java.util.ArrayList;
@@ -13,21 +15,24 @@ public class StudentDaoList implements StudentDao {
     }
 
     @Override
-    public Student saveStudent(Student student) {
+    public Student saveStudent(Student student) throws ResourceExist {
         if (!students.contains(student)){
+            if(students.contains(student.getEmail())){
+                System.out.println("this email is exist!");
+            }
             students.add(student);
             return student;
         }
-        return null;
+        throw new ResourceExist(student + " is already exist!");
     }
 
     @Override
-    public Student findByEmail(String email) {
+    public Student findByEmail(String email) throws ResourceNotExist {
         for (Student student : students){
             if(email.equals(student.getEmail()))
                 return student;
         }
-        return null;
+        throw new ResourceNotExist("No student by this email " + email);
     }
 
     @Override
@@ -38,17 +43,18 @@ public class StudentDaoList implements StudentDao {
                 temp.add(student);
             }
         }
+        System.out.println( temp.size() + " student/s is found");
         return temp;
     }
 
     @Override
-    public Student findById(String id) {
+    public Student findById(String id) throws ResourceNotExist {
         for (Student student : students){
             if(id.equals(student.getId())){
                 return student;
             }
         }
-        return null;
+       throw new ResourceNotExist("No student by this id " + id + " found!");
     }
 
     @Override
@@ -57,7 +63,7 @@ public class StudentDaoList implements StudentDao {
     }
 
     @Override
-    public boolean deleteStudent(Student student) {
+    public boolean deleteStudent(Student student) throws ResourceNotExist {
         for (Student obj : students){
             if (student.equals(obj)){
                 students.remove(obj);
@@ -65,6 +71,6 @@ public class StudentDaoList implements StudentDao {
                 return true;
             }
         }
-        return false;
+        throw new ResourceNotExist("This student is not found");
     }
 }

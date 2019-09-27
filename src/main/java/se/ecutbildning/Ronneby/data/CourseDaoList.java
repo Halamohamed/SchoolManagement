@@ -1,5 +1,7 @@
 package se.ecutbildning.Ronneby.data;
 
+import se.ecutbildning.Ronneby.exeptions.ResourceExist;
+import se.ecutbildning.Ronneby.exeptions.ResourceNotExist;
 import se.ecutbildning.Ronneby.model.Course;
 
 import java.time.LocalDate;
@@ -15,22 +17,26 @@ public class CourseDaoList implements CourseDao {
     }
 
     @Override
-    public Course saveCourse(Course course) {
+    public Course saveCourse(Course course) throws ResourceExist {
         if(!courses.contains(course)){
+            if (courses.contains(course.getId())){
+                System.out.println("this course id is exist!");
+            }
             courses.add(course);
+            System.out.println("course is saved.");
             return course;
         }
-        return null;
+        throw new ResourceExist("This course is already exist! " + course);
     }
 
     @Override
-    public Course findById(int id) {
+    public Course findById(int id) throws ResourceNotExist {
         for(Course course : courses){
             if(id==course.getId()){
                 return course;
             }
         }
-        return null;
+        throw new ResourceNotExist("This course id " + id  + " is not exist! " );
     }
 
     @Override
@@ -41,6 +47,7 @@ public class CourseDaoList implements CourseDao {
                 temp.add(course);
             }
         }
+        System.out.println(temp.size() + " course/s found by name " + name);
         return temp;
     }
 
@@ -52,6 +59,7 @@ public class CourseDaoList implements CourseDao {
                 temp.add(course);
             }
         }
+        System.out.println(temp.size() + " course/s found by date " + date);
         return temp;
     }
 
@@ -62,13 +70,14 @@ public class CourseDaoList implements CourseDao {
     }
 
     @Override
-    public boolean removeCourse(Course course) {
+    public boolean removeCourse(Course course) throws ResourceNotExist {
         for(Course course1 : courses){
             if(course1.equals(course)){
                 courses.remove(course1);
+                System.out.println("course " + course + " is removed.");
                 return true;
             }
         }
-        return false;
+        throw new ResourceNotExist("Course not found!");
     }
 }

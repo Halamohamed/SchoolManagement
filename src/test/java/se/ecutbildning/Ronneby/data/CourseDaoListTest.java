@@ -6,6 +6,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import se.ecutbildning.Ronneby.data.CourseDaoList;
+import se.ecutbildning.Ronneby.exeptions.ResourceExist;
+import se.ecutbildning.Ronneby.exeptions.ResourceNotExist;
 import se.ecutbildning.Ronneby.model.Course;
 import se.ecutbildning.Ronneby.model.Student;
 
@@ -29,7 +31,7 @@ public class CourseDaoListTest
     Student hala;
     Student peter;
     @Before
-    public void setUp(){
+    public void setUp() throws ResourceExist {
         khalifa = new Student("Khalifa","khalifa@ecutb.se","khalifagatan");
         java = new Course(1,"java", LocalDate.parse("2019-08-19"),6,new ArrayList<Student>());
         courseDaoList = new CourseDaoList();
@@ -42,7 +44,7 @@ public class CourseDaoListTest
 
     }
     @Test
-    public void testSaveCourse() {
+    public void testSaveCourse() throws ResourceExist {
         Course html = new Course(2, "html", LocalDate.parse("2019-09-30"), 5, new ArrayList<>());
 
         List<Student> expected = new ArrayList<>();
@@ -55,7 +57,7 @@ public class CourseDaoListTest
         Assert.assertEquals(expected, html.getStudents());
     }
     @Test
-    public void testFindById(){
+    public void testFindById() throws ResourceNotExist {
 
         Assert.assertEquals(java, courseDaoList.findById(1));
         Assert.assertEquals(1, java.getId());
@@ -88,13 +90,13 @@ public class CourseDaoListTest
 
     }
     @Test
-    public void testRemoveCourse(){
+    public void testRemoveCourse() throws ResourceNotExist {
         Assert.assertTrue(courseDaoList.removeCourse(javaScript18));
         System.out.println(courseDaoList.findAll());
     }
 
     @Test
-    public void testRegisterStudent(){
+    public void testRegisterStudent() throws ResourceNotExist, ResourceExist {
         hala = new Student("hala","hala@ec.se","halavägen");
         Assert.assertTrue(java.register(hala));
         Assert.assertTrue(java.unregister(hala));

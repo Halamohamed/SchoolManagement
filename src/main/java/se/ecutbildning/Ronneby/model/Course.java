@@ -1,5 +1,8 @@
 package se.ecutbildning.Ronneby.model;
 
+import se.ecutbildning.Ronneby.exeptions.ResourceExist;
+import se.ecutbildning.Ronneby.exeptions.ResourceNotExist;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -59,19 +62,22 @@ public class Course {
         this.students = students;
     }
 
-    public boolean register(Student student){
+    public boolean register(Student student) throws ResourceExist {
         if(!students.contains(student)){
             students.add(student);
+            System.out.println(student + " is registered");
             return true;
         }
-return false;
+     throw new ResourceExist("This student is already registered.");
     }
 
-    public boolean unregister(Student student){
+    public boolean unregister(Student student) throws ResourceNotExist {
         if(students.contains(student)){
             students.remove(student);
+            System.out.println(student + " is unregistered.");
             return true;
-        }return false;
+        }
+        throw new ResourceNotExist(student + " is not found!");
     }
 
     @Override

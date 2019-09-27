@@ -3,6 +3,8 @@ package se.ecutbildning.Ronneby.data;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import se.ecutbildning.Ronneby.exeptions.ResourceExist;
+import se.ecutbildning.Ronneby.exeptions.ResourceNotExist;
 import se.ecutbildning.Ronneby.model.Student;
 
 import java.util.ArrayList;
@@ -17,7 +19,7 @@ public class StudentDaoListTest {
 
 
     @Before
-    public void setUp(){
+    public void setUp() throws ResourceExist {
         peter = new Student("Peter", "peter@ec.com","Hemvägen 1");
         studentList = new StudentDaoList();
         khalifa = new Student("khalifa","khalifa@ec.com","halagatan");
@@ -28,7 +30,7 @@ public class StudentDaoListTest {
 
     }
     @Test
-    public  void testSaveStudent(){
+    public  void testSaveStudent() throws ResourceExist {
         khalifa = new Student("khalifa","khalifa@ec.com","halagatan");
         //studentList.saveStudent(khalifa);
         Assert.assertEquals(khalifa,studentList.saveStudent(khalifa));
@@ -37,7 +39,7 @@ public class StudentDaoListTest {
         Assert.assertEquals("halagatan",khalifa.getAddress());
     }
     @Test
-    public void testFindByEmail(){
+    public void testFindByEmail() throws ResourceNotExist {
         Assert.assertEquals(peter,studentList.findByEmail("peter@ec.com"));
         Assert.assertEquals("peter@ec.com", peter.getEmail());
     }
@@ -52,7 +54,7 @@ public class StudentDaoListTest {
     }
 
     @Test
-    public void testFindById(){
+    public void testFindById() throws ResourceNotExist {
         Assert.assertEquals(peter,studentList.findById(peter.getId()));
     }
 
@@ -66,7 +68,7 @@ public class StudentDaoListTest {
     }
 
     @Test
-    public void testDeleteStudent(){
+    public void testDeleteStudent() throws ResourceNotExist {
         Assert.assertTrue(studentList.deleteStudent(khalifa));
         System.out.println(studentList.findAll());
     }
