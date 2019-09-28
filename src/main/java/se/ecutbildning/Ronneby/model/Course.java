@@ -62,22 +62,22 @@ public class Course {
         this.students = students;
     }
 
-    public boolean register(Student student) throws ResourceExist {
-        if(!students.contains(student)){
+    public void register(Student student) throws ResourceExist {
+        if(!students.contains(student) && !students.contains(student.getEmail())){
             students.add(student);
             System.out.println(student + " is registered");
-            return true;
+        }else {
+            throw new ResourceExist("This student is already registered.");
         }
-     throw new ResourceExist("This student is already registered.");
     }
 
-    public boolean unregister(Student student) throws ResourceNotExist {
+    public void unregister(Student student) throws ResourceNotExist {
         if(students.contains(student)){
             students.remove(student);
             System.out.println(student + " is unregistered.");
-            return true;
+        }else {
+            throw new ResourceNotExist(student + " is not found!");
         }
-        throw new ResourceNotExist(student + " is not found!");
     }
 
     @Override

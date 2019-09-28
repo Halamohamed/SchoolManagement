@@ -71,8 +71,4 @@ public class Student {
                 '}'+ "\n";
     }
 
-
-    public boolean compareTo(Student o) {
-        return this.email.equals(o.getEmail());
-    }
 }

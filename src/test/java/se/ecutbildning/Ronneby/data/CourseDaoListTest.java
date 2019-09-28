@@ -98,7 +98,10 @@ public class CourseDaoListTest
     @Test
     public void testRegisterStudent() throws ResourceNotExist, ResourceExist {
         hala = new Student("hala","hala@ec.se","halavägen");
-        Assert.assertTrue(java.register(hala));
-        Assert.assertTrue(java.unregister(hala));
+        java.register(hala);
+        Assert.assertTrue(java.getStudents().contains(hala));
+        java.unregister(hala);
+        Assert.assertFalse(java.getStudents().contains(hala));
+        System.out.println(java.getStudents());
     }
 }

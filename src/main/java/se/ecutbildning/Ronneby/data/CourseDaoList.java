@@ -20,7 +20,7 @@ public class CourseDaoList implements CourseDao {
     public Course saveCourse(Course course) throws ResourceExist {
         if(!courses.contains(course)){
             if (courses.contains(course.getId())){
-                System.out.println("this course id is exist!");
+                throw new ResourceExist("this course id is exist!");
             }
             courses.add(course);
             System.out.println("course is saved.");
