@@ -35,9 +35,9 @@ public class StartSchool
             System.out.println(exist.getMessage());
         }
 
-        System.out.println("---------------************--------------------");
-        System.out.println("            SCHOOL MANAGEMENT SYSTEM");
-        System.out.println("---------------************--------------------");
+        System.out.println("--------------------************--------------------");
+        System.out.println("            WELCOME SCHOOL MANAGEMENT SYSTEM");
+        System.out.println("--------------------************--------------------");
         while (true) {
             menu();
             try{
@@ -427,7 +427,7 @@ public class StartSchool
      * menu to select your choice in school system
      */
     private static void menu() {
-        System.out.println("--------------------------------------------------");
+        System.out.println("-----------------------------------------------------------------");
         System.out.println(" MENU ");
         System.out.println("select a number for your choice : ");
         System.out.println("(1)Create new Courses          \t(2)Create new Students");
@@ -436,6 +436,6 @@ public class StartSchool
         System.out.println("(7)Edit Courses                \t(8)Edit Students ");
         System.out.println("(9)Get all Students            \t(10)Get all Courses");
         System.out.println("(11)Exit ");
-        System.out.println("--------------------------------------------------");
+        System.out.println("-----------------------------------------------------------------");
     }
 }
