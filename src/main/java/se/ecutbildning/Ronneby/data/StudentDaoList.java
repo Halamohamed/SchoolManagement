@@ -17,7 +17,7 @@ public class StudentDaoList implements StudentDao {
     @Override
     public Student saveStudent(Student student) throws ResourceExist {
         if (!students.contains(student)){
-            if(students.contains(student.getEmail())){
+            if(students.contains(student.getEmail()) ){
                 System.out.println("this email is exist!");
             }
             students.add(student);

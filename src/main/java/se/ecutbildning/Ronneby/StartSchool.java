@@ -9,6 +9,7 @@ import se.ecutbildning.Ronneby.model.Student;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -24,53 +25,65 @@ public class StartSchool
     public static void main( String[] args ) {
         studentDaoList = new StudentDaoList();
         courseDaoList = new CourseDaoList();
+        try {
+            studentDaoList.saveStudent(new Student("hala", "hala@ec.se", "halavägen"));
+            studentDaoList.saveStudent(new Student("peter","peter@ec.se","petervägen"));
+            studentDaoList.saveStudent(new Student("khalifa","khalifa@ec.se","khalifavägen"));
+            courseDaoList.saveCourse(new Course(1,"java",LocalDate.parse("2019-08-19"),6, Arrays.asList(new Student("hala", "hala@ec.se", "halavägen"))));
+            courseDaoList.saveCourse(new Course(2, "html", LocalDate.parse("2019-09-30"),5,Arrays.asList(new Student("peter","peter@ec.se","petervägen"))));
+        }catch (ResourceExist exist){
+            System.out.println(exist.getMessage());
+        }
 
         System.out.println("---------------************--------------------");
         System.out.println("            SCHOOL MANAGEMENT SYSTEM");
         System.out.println("---------------************--------------------");
         while (true) {
             menu();
-            int selection = scanner.nextInt();
+            try{
+            int selection = Integer.parseInt(scanner.next());
             switch (selection){
                 case 1:
-                    createNew();
+                    createCourses();
                     break;
                 case 2:
-                    registerAndRemove();
+                    createStudents();
                     break;
                 case 3:
-                    findStudentsAndCourses();
+                    registerStudentToCourse();
                     break;
                 case 4:
-                    editStudentsAndCourses();
+                    removeStudentFromCourse();
                     break;
                 case 5:
-                    System.out.println(studentDaoList.findAll());
+                    findingCourses();
                     break;
                 case 6:
-                    System.out.println(courseDaoList.findAll());
+                    findingStudents();
                     break;
                 case 7:
+                    editCourse();
+                    break;
+                case 8:
+                    editStudent();
+                    break;
+                case 9:
+                    System.out.println(studentDaoList.findAll());
+                    break;
+                case 10:
+                    System.out.println(courseDaoList.findAll());
+                    break;
+                case 11:
                     System.out.println("Thanks and Bye! ");
                     System.exit(0);
                     break;
                 default:
-                    System.out.println("ops! something wrong");
+                    System.out.println(" wrong input");
+            }}catch (NumberFormatException ex){
+                System.out.println(ex.getMessage());
             }
         }
-    }
 
-    /**
-     * edit students and courses
-     */
-    private static void editStudentsAndCourses() {
-        System.out.println("would you like to edit Student or Course (s/c)?");
-        String answer = scanner.next();
-        if(answer.equalsIgnoreCase("s")){
-            editStudent();
-        }else if(answer.equalsIgnoreCase("c")){
-            editCourse();
-        }
     }
 
     /**
@@ -82,7 +95,7 @@ public class StartSchool
             Course course = courseDaoList.findById(id);
             if (course != null) {
                 System.out.println("select what you want to edit (1)name (2)start date (3)week duration");
-                int select = scanner.nextInt();
+                int select = Integer.parseInt(scanner.next());
                 switch (select) {
                     case 1:
                         String name = enterStudentName();
@@ -114,7 +127,7 @@ public class StartSchool
                 System.out.println(course + " edited");
             } else
                 System.out.println("Course not found");
-        }catch (ResourceNotExist ex){
+        }catch (ResourceNotExist |NumberFormatException ex){
             System.out.println(ex.getMessage());
         }
 
@@ -129,7 +142,7 @@ public class StartSchool
             Student student = studentDaoList.findByEmail(studentEmail);
             if (student != null) {
                 System.out.println("select what you want to edit (1)name (2)email (3)address");
-                int select = scanner.nextInt();
+                int select = Integer.parseInt(scanner.next());
                 switch (select) {
                     case 1:
                         String name = enterStudentName();
@@ -157,22 +170,19 @@ public class StartSchool
                 }System.out.println(student + " edited.");
             } else
                 System.out.println("Student not found");
-        }catch (ResourceNotExist ex){
+        }catch (ResourceNotExist | NumberFormatException ex){
             System.out.println(ex.getMessage());
         }
 
     }
 
     /**
-     * find students and courses
+     * find  courses
      */
-    private static void findStudentsAndCourses()  {
+    private static void findingCourses()  {
         try {
-            System.out.println("would you want to find course or student(c/s)?");
-            String answer = scanner.next();
-            if (answer.equalsIgnoreCase("c")) {
                 System.out.println(" find course by: \t(1)id \t(2)name \t(3)start time ");
-                int select = scanner.nextInt();
+                int select = Integer.parseInt(scanner.next());
                 switch (select) {
                     case 1:
                         int courseId = enterCourseId();
@@ -189,45 +199,35 @@ public class StartSchool
                     default:
                         System.out.println("wrong choice");
                 }
-            } else if (answer.equalsIgnoreCase("s")) {
-                System.out.println(" find student by: \t(1)id \t(2)name \t(3)email ");
-                int select = scanner.nextInt();
-                switch (select) {
-                    case 1:
-                        String studentId = enterStudentId();
-                        System.out.println(studentDaoList.findById(studentId));
-                        break;
-                    case 2:
-                        String studentName = enterStudentName();
-                        System.out.println(studentDaoList.findByName(studentName));
-                        break;
-                    case 3:
-                        String email = enterEmail();
-                        System.out.println(studentDaoList.findByEmail(email));
-                        break;
-                    default:
-                        System.out.println("wrong choice");
-                }
-            } else
-                System.out.println("ops!");
-        }catch (ResourceNotExist ex){
+        }catch (ResourceNotExist| NumberFormatException ex){
             System.out.println(ex.getMessage());
         }
     }
-
     /**
-     * register and unregister student
+     * find  students
      */
-    private static void registerAndRemove()  {
-        System.out.println("would you like to register or unregister (1/2)?");
-        int answer = scanner.nextInt();
-        if(answer == 1){
-            registerStudentToCourse();
+    private static void findingStudents(){
+        try{
+            System.out.println(" find student by: \t(1)id \t(2)name \t(3)email ");
+            int select = Integer.parseInt(scanner.next());
+            switch (select) {
+                case 1:
+                    String studentId = enterStudentId();
+                    System.out.println(studentDaoList.findById(studentId));
+                    break;
+                case 2:
+                    String studentName = enterStudentName();
+                    System.out.println(studentDaoList.findByName(studentName));
+                    break;
+                case 3:
+                    String email = enterEmail();
+                    System.out.println(studentDaoList.findByEmail(email));
+                    break;
+                default:
+                    System.out.println("wrong choice");
+            }}catch (ResourceNotExist |NumberFormatException ex){
+            System.out.println(ex.getMessage());
         }
-        else if(answer == 2){
-            removeStudentFromCourse();
-        }
-
     }
 
     /**
@@ -260,7 +260,7 @@ public class StartSchool
             int courseId = enterCourseId();
             Course course = courseDaoList.findById(courseId);
             if (course != null) {
-                List<Student> students = enterStudent();
+                List<Student> students = createStudents();
                 for (Student student : students) {
                     if(!course.getStudents().contains(student.getEmail()))
                     course.register(student);
@@ -275,9 +275,9 @@ public class StartSchool
     }
 
     /**
-     * create new courses and students
+     * create new courses
      */
-    private static void createNew()  {
+    private static void createCourses()  {
         boolean yes = true;
         List<Student> students = new ArrayList<>();
         try {
@@ -286,10 +286,6 @@ public class StartSchool
         String courseName = enterCourseName();
         LocalDate startDate = enterDate();
         int weekDuration = enterDuration();
-//        //enter students to course
-//        System.out.println("would you want to add a Student(y/n)?");
-//        if(scanner.next().equalsIgnoreCase("y"))
-//            students = enterStudent();
             Course course = new Course(id, courseName, startDate, weekDuration, students);
             //if (!course.getStudents().contains(students))
             courseDaoList.saveCourse(course);
@@ -306,7 +302,7 @@ public class StartSchool
                     yes = false;
                     break;
                 default:
-                    System.out.println("OPS!");
+                    System.out.println("OPS! please enter y/n");
             }
             }
         }catch (ResourceExist exist){
@@ -318,7 +314,7 @@ public class StartSchool
     /**
      * @return list of students
      */
-    private static List<Student> enterStudent()  {
+    private static List<Student> createStudents()  {
         boolean yes = true;
         List<Student> students = new ArrayList<>();
         try {
@@ -384,8 +380,13 @@ public class StartSchool
      * @return course Id
      */
     private static int enterCourseId() {
+        int id = 0;
         System.out.println("enter Course id:");
-        int id = scanner.nextInt();
+        try {
+             id = Integer.parseInt(scanner.next());
+        }catch (NumberFormatException e){
+            System.out.println(e.getMessage());
+        }
         return id;
     }
 
@@ -402,8 +403,13 @@ public class StartSchool
      * @return  week duration to the course
      */
     private static int enterDuration() {
+        int duration = 0;
         System.out.println("enter week duration:");
-        int duration = scanner.nextInt();
+        try {
+            duration = Integer.parseInt(scanner.next());
+        }catch (NumberFormatException e){
+            System.out.println(e.getMessage());
+        }
         return duration;
     }
 
@@ -424,13 +430,12 @@ public class StartSchool
         System.out.println("--------------------------------------------------");
         System.out.println(" MENU ");
         System.out.println("select a number for your choice : ");
-        System.out.println("(1)Create new Courses and Students");
-        System.out.println("(2)Register and unregister Students to/from Courses");
-        System.out.println("(3)Finding Courses and Students ");
-        System.out.println("(4)Edit Courses and Students ");
-        System.out.println("(5)Get all Students ");
-        System.out.println("(6)Get all Courses ");
-        System.out.println("(7)Exit ");
+        System.out.println("(1)Create new Courses          \t(2)Create new Students");
+        System.out.println("(3)Register Student to Courses \t(4)unregister Student from Course");
+        System.out.println("(5)Finding Courses             \t(6)Finding Students ");
+        System.out.println("(7)Edit Courses                \t(8)Edit Students ");
+        System.out.println("(9)Get all Students            \t(10)Get all Courses");
+        System.out.println("(11)Exit ");
         System.out.println("--------------------------------------------------");
     }
 }

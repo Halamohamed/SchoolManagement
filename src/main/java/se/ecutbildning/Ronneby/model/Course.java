@@ -63,7 +63,7 @@ public class Course {
     }
 
     public void register(Student student) throws ResourceExist {
-        if(!students.contains(student) && !students.contains(student.getEmail())){
+        if(!students.contains(student) ){
             students.add(student);
             System.out.println(student + " is registered");
         }else {
