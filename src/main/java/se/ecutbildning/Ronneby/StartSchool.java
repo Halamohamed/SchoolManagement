@@ -35,9 +35,9 @@ public class StartSchool
             System.out.println(exist.getMessage());
         }
 
-        System.out.println("--------------------************--------------------");
-        System.out.println("            WELCOME SCHOOL MANAGEMENT SYSTEM");
-        System.out.println("--------------------************--------------------");
+        System.out.println("-------------------------************----------------------------");
+        System.out.println("            WELCOME TO SCHOOL MANAGEMENT SYSTEM");
+        System.out.println("-------------------------************----------------------------");
         while (true) {
             menu();
             try{
@@ -235,7 +235,7 @@ public class StartSchool
      */
     private static void removeStudentFromCourse()  {
         try {
-            System.out.println("to unregister Student first ");
+            System.out.println("to unregister Student  ");
             int courseId = enterCourseId();
             Course course = courseDaoList.findById(courseId);
             if (course != null) {
@@ -256,7 +256,7 @@ public class StartSchool
      */
     private static void registerStudentToCourse()  {
         try {
-            System.out.print("to register Student first ");
+            System.out.print("to register Student  ");
             int courseId = enterCourseId();
             Course course = courseDaoList.findById(courseId);
             if (course != null) {
@@ -283,7 +283,13 @@ public class StartSchool
         try {
             while (yes) {
         int id = enterCourseId();
+        if (courseDaoList.findAll().contains(id)){
+            System.out.println("course id is exist!");
+        }
         String courseName = enterCourseName();
+        if(courseDaoList.findAll().contains(courseName)){
+            System.out.println("course name is exist!");
+        }
         LocalDate startDate = enterDate();
         int weekDuration = enterDuration();
             Course course = new Course(id, courseName, startDate, weekDuration, students);
@@ -321,6 +327,9 @@ public class StartSchool
         while (yes) {
             String name = enterStudentName();
             String email = enterEmail();
+            if (studentDaoList.findAll().contains(email)){
+                System.out.println("student email is exist!");
+            }
             String address = enterAddress();
             Student student = new Student( name, email, address);
             if(!studentDaoList.findAll().contains(student.getEmail())) {
